@@ -16,7 +16,7 @@ module Mongoid
           keywords = field
         end
         for keyword in keywords
-          if keyword.is_a(String)
+          if keyword.is_a?(String)
             keyword.downcase!
             keyword.strip!
             keyword.gsub!(StripPunctuationRegex, PunctuationReplacement)

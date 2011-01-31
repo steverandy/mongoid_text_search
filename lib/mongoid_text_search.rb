@@ -21,6 +21,7 @@ module Mongoid
         index :keywords
         
         # Create a method for searching based on keywords of all specified field.
+        singleton = class << self; self end
         singleton.send :define_method, "with_keywords" do |keywords|
           if !keywords.nil? && keywords.count > 0
             where(:keywords.all => keywords.collect!{ |keyword| /.*#{keyword}.*/ })
@@ -37,9 +38,12 @@ module Mongoid
     
     module InstanceMethods
       def set_keywords
+        self.keywords = []
+        new_keywords = []
         for field in self.class.search_fields
-          self.keywords << KeywordGenerator.clean_keywords(send("#{field}"))
+          new_keywords.concat(KeywordGenerator.clean_keywords(send("#{field}")))
         end
+        self.keywords = new_keywords.uniq
       end
     end 
   end
