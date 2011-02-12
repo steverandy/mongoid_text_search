@@ -18,7 +18,7 @@ module Mongoid
         for keyword in keywords
           if keyword.is_a?(String)
             clean_keyword = keyword.downcase
-            clean_keyword = clean_keyword.strip
+            clean_keyword.strip!
             clean_keyword.gsub!(StripPunctuationRegex, PunctuationReplacement)
             if clean_keyword.size > 2 && !IgnoredWords.include?(clean_keyword) && !clean_keywords.include?(clean_keyword)
               clean_keywords << clean_keyword
