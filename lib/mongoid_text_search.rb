@@ -24,7 +24,7 @@ module Mongoid
         singleton = class << self; self end
         singleton.send :define_method, "with_keywords" do |keywords|
           if !keywords.nil? && keywords.count > 0
-            where(:keywords.all => keywords.collect!{ |keyword| /.*#{keyword}.*/ })
+            where(:keywords.all => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
           else
             where() # Select everything.
           end
