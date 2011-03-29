@@ -22,9 +22,14 @@ module Mongoid
         
         # Create a method for searching based on keywords of all specified field.
         singleton = class << self; self end
-        singleton.send :define_method, "with_keywords" do |keywords|
+        singleton.send :define_method, "with_keywords" do |keywords, *options|
+          options = options.first || {}
           if !keywords.nil? && keywords.count > 0
-            where(:keywords.all => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
+            if options[:match].to_s == "all" || options.empty?
+              where(:keywords.all => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
+            elsif options[:match].to_s == "any"
+              where(:keywords.any => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
+            end
           else
             where() # Select everything.
           end
