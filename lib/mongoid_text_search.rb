@@ -28,7 +28,7 @@ module Mongoid
             if options[:match].to_s == "all" || options.empty?
               where(:keywords.all => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
             elsif options[:match].to_s == "any"
-              where(:keywords.any => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
+              where(:keywords.in => keywords.collect!{ |keyword| /.*#{keyword}.*/i })
             end
           else
             where() # Select everything.
